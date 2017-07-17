@@ -38,9 +38,7 @@ import java.util.Map;
 public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer> implements LifecycleEventListener {
 
     private static final int COMMAND_PLAY = 0;
-    private static final int COMMAND_PAUSE = 1;
-    private static final int COMMAND_STOP = 2;
-    private static final int COMMAND_REPLAY = 3;
+    private static final int BACK_FROM_FULL = 1;
 
     private final ReactApplicationContext mReactApplicationContext;
     private RCTVideoPlayer player;
@@ -69,6 +67,7 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     @Override
     protected void addEventEmitters(ThemedReactContext reactContext, RCTVideoPlayer view) {
         super.addEventEmitters(reactContext, view);
+        reactContext.addLifecycleEventListener(this);
     }
 
     @Override
@@ -243,7 +242,8 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
                 "topPlay", MapBuilder.of("registrationName", "onPlay"),
                 "topPause", MapBuilder.of("registrationName", "onPause"),
                 "topEnd", MapBuilder.of("registrationName", "onEnd"),
-                "topError", MapBuilder.of("registrationName", "onError")
+                "topError", MapBuilder.of("registrationName", "onError"),
+                "topFullscreen", MapBuilder.of("registrationName", "onFullscreen")
                 );
     }
 
@@ -251,7 +251,8 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of(
-                "play", COMMAND_PLAY
+                "play", COMMAND_PLAY,
+                "backFromFull", BACK_FROM_FULL
                 );
     }
 
@@ -259,8 +260,13 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     public void receiveCommand(RCTVideoPlayer root, int commandId, @javax.annotation.Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);
         switch (commandId){
-            case COMMAND_PLAY:
+            case COMMAND_PLAY: {
                 player.startPlayLogic();
+                break;
+            }
+            case BACK_FROM_FULL: {
+                break;
+            }
         }
     }
 }

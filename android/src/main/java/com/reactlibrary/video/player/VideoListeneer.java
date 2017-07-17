@@ -1,6 +1,8 @@
 package com.reactlibrary.video.player;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -86,12 +88,16 @@ public class VideoListeneer implements StandardVideoAllCallBack {
 
     @Override
     public void onEnterFullscreen(String url, Object... objects) {
-
+        WritableMap map = new WritableNativeMap();
+        map.putBoolean("isFullscreen", true);
+        eventDispatcher.dispatchEvent(new VideoPlayerEvent(player.getId(), "topFullscreen", map));
     }
 
     @Override
     public void onQuitFullscreen(String url, Object... objects) {
-
+        WritableMap map = new WritableNativeMap();
+        map.putBoolean("isFullscreen", false);
+        eventDispatcher.dispatchEvent(new VideoPlayerEvent(player.getId(), "topFullscreen", map));
     }
 
     @Override
