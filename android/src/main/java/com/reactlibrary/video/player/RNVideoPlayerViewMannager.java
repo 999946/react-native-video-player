@@ -23,7 +23,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.shuyu.gsyvideoplayer.GSYPreViewManager;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.GSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
@@ -168,11 +168,13 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
 
     @Override
     public void onHostResume() {
+        GSYVideoManager.onResume();
         isPause = false;
     }
 
     @Override
     public void onHostPause() {
+        GSYVideoManager.onPause();
         isPause = true;
     }
 
@@ -265,6 +267,9 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
                 break;
             }
             case BACK_FROM_FULL: {
+                if (orientationUtils != null) {
+                    orientationUtils.backToProtVideo();
+                }
                 player.backFromWindowFull(mReactApplicationContext.getCurrentActivity());
                 break;
             }
