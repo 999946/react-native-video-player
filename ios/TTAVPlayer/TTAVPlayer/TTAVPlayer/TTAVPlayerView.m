@@ -151,9 +151,6 @@
     
     if (!self.player){
         [self loadPlayer];
-        if ([self.delegate respondsToSelector:@selector(videoDidPlay)]){
-            [self.delegate videoDidPlay];
-        }
         return;
     }
     
@@ -227,7 +224,7 @@
             [self.mySuperView addSubview:weakSelf];
         }
         [UIView animateWithDuration:0.2 animations:^{
-            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+//            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
             self.transform = CGAffineTransformIdentity;
             self.frame = self.originFrame;
             self.playBtn.frame = CGRectMake(self.bounds.size.width/2-25, self.bounds.size.height/2-25, 50.0f, 50.0f);
@@ -289,6 +286,9 @@
     _isPlaying = YES;
     [self.playBtn setSelected:NO];
     [self.player play];
+    if ([self.delegate respondsToSelector:@selector(videoDidPlay)]){
+        [self.delegate videoDidPlay];
+    }
     [self toggleAutoHideOperationView];
 }
 

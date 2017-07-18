@@ -59,20 +59,36 @@ class VideoPlayer extends Component {
   };
 
   play = (url, isCache, title) => {
-    UIManager.dispatchViewManagerCommand(
-      ReactNative.findNodeHandle(this),
-      UIManager.RCTVideoPlayer.Commands.play,
-      [url, isCache, title]
-    );
+    if(Platform.OS == 'android') {
+      UIManager.dispatchViewManagerCommand(
+        ReactNative.findNodeHandle(this),
+        UIManager.RCTVideoPlayer.Commands.play,
+        [url, isCache, title]
+      );
+    } else {
+      const { VideoPlayerManager } = NativeModules;
+      VideoPlayerManager.play(ReactNative.findNodeHandle(this));
+    }
   };
 
   backFromFull = () => {
-    UIManager.dispatchViewManagerCommand(
-      ReactNative.findNodeHandle(this),
-      UIManager.RCTVideoPlayer.Commands.backFromFull,
-      []
-    );
+    if(Platform.OS == 'android') {
+      UIManager.dispatchViewManagerCommand(
+        ReactNative.findNodeHandle(this),
+        UIManager.RCTVideoPlayer.Commands.backFromFull,
+        []
+      );
+    }
   };
+
+  pause = () => {
+    if(Platform.OS == 'android') {
+      // TODO
+    } else {
+      const { VideoPlayerManager } = NativeModules;
+      VideoPlayerManager.pause(ReactNative.findNodeHandle(this));
+    }
+  }
 
   render() {
     return <RCTVideo ref="native" {...this.props} onFullscreen={this.onFullscreen} />;
