@@ -265,6 +265,7 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
                 break;
             }
             case BACK_FROM_FULL: {
+                player.backFromWindowFull(mReactApplicationContext.getCurrentActivity());
                 break;
             }
         }

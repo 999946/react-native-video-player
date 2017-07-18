@@ -1,59 +1,70 @@
-
 import React, { Component, PropTypes } from 'react';
-import ReactNative, { StyleSheet, requireNativeComponent, NativeModules, View, Platform, UIManager, BackAndroid } from 'react-native';
+import ReactNative, {
+  StyleSheet,
+  requireNativeComponent,
+  NativeModules,
+  View,
+  Platform,
+  UIManager,
+  BackAndroid
+} from 'react-native';
 
 class VideoPlayer extends Component {
-  constructor(...args){
+  constructor(...args) {
     super(...args);
     this.isFullscreen = false;
   }
-  
+
   static propTypes = {
     ...View.propTypes,
     src: PropTypes.string.isRequired,
     title: PropTypes.string,
     placeholderImage: PropTypes.string,
-    onBack : PropTypes.func,
+    onBack: PropTypes.func,
     onPrepared: PropTypes.func,
-    onPlay : PropTypes.func,
-    onPause : PropTypes.func,
-    onEnd : PropTypes.func,
-    onError : PropTypes.func,
-    onFullscreen : PropTypes.func
-  }
+    onPlay: PropTypes.func,
+    onPause: PropTypes.func,
+    onEnd: PropTypes.func,
+    onError: PropTypes.func,
+    onFullscreen: PropTypes.func
+  };
 
   static nativeOnly = {
-    onFullscreen : true
-  }
+    onFullscreen: true
+  };
 
   componentDidMount() {
-    BackAndroid.addEventListener('hardwareBackPress', this.handleAndroidBack);
+    if (Platform.OS == 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', this.handleAndroidBack);
+    }
   }
 
   componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', this.handleAndroidBack);
+    if (Platform.OS == 'android') {
+      BackAndroid.removeEventListener('hardwareBackPress', this.handleAndroidBack);
+    }
   }
 
   handleAndroidBack = () => {
-    if(this.isFullscreen) {
+    if (this.isFullscreen) {
       this.backFromFull();
       return true;
     }
     return false;
-  }
+  };
 
-  onFullscreen = (event) => {
+  onFullscreen = event => {
     this.isFullscreen = event.nativeEvent.isFullscreen;
-    this.props.onFullscreen && this.props.onFullscreen(event.nativeEvent.isFullscreen)
-  }
-  
+    this.props.onFullscreen && this.props.onFullscreen(event.nativeEvent.isFullscreen);
+  };
+
   play = () => {
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this),
       UIManager.RCTVideoPlayer.Commands.play,
       []
     );
-  }
+  };
 
   backFromFull = () => {
     UIManager.dispatchViewManagerCommand(
@@ -61,14 +72,10 @@ class VideoPlayer extends Component {
       UIManager.RCTVideoPlayer.Commands.backFromFull,
       []
     );
-  }
+  };
 
-  render(){
-    return <RCTVideo
-     ref="native"
-     {...this.props} 
-     onFullscreen={this.onFullscreen}
-    />
+  render() {
+    return <RCTVideo ref="native" {...this.props} onFullscreen={this.onFullscreen} />;
   }
 }
 
