@@ -197,13 +197,18 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
 
     // props
     @ReactProp(name = "src")
-    public void setSrc(RCTVideoPlayer player, @Nullable String src) {
+    public void setSrc(final RCTVideoPlayer player, @Nullable String src) {
         Log.i("RCTVideoPlayer", "set src " + src);
 
         player.setUp(src, false);
         // 如果切换了播放的文件路径，触发开始播放
         if(src.equals(this.src)){
-            player.startPlayLogic();
+            player.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    player.startPlayLogic();
+                }
+            }, 1000);
         }
         this.src = src;
     }
@@ -264,6 +269,14 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
         switch (commandId){
             case COMMAND_PLAY: {
                 player.startPlayLogic();
+                player.release();
+                player.setUp(args.getString(0), args.getBoolean(1), null, args.getString(2));
+                player.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        player.startPlayLogic();
+                    }
+                }, 1000);
                 break;
             }
             case BACK_FROM_FULL: {

@@ -58,11 +58,11 @@ class VideoPlayer extends Component {
     this.props.onFullscreen && this.props.onFullscreen(event.nativeEvent.isFullscreen);
   };
 
-  play = () => {
+  play = (url, isCache, title) => {
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this),
       UIManager.RCTVideoPlayer.Commands.play,
-      []
+      [url, isCache, title]
     );
   };
 
