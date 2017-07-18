@@ -38,7 +38,8 @@ import java.util.Map;
 public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer> implements LifecycleEventListener {
 
     private static final int COMMAND_PLAY = 0;
-    private static final int BACK_FROM_FULL = 1;
+    private static final int COMMAND_PAUSE = 1;
+    private static final int COMMAND_BACK_FROM_FULL = 2;
 
     private final ReactApplicationContext mReactApplicationContext;
     private RCTVideoPlayer player;
@@ -88,6 +89,7 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
         player.setLockLand(false);
         player.setShowFullAnimation(false);
         player.setNeedLockFull(false);
+        player.setDismissControlTime(3000);
         //player.setOpenPreView(false);
 
         player.getBackButton().setOnClickListener(new View.OnClickListener() {
@@ -259,8 +261,8 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.of(
                 "play", COMMAND_PLAY,
-                "backFromFull", BACK_FROM_FULL
-                );
+                "pause", COMMAND_PAUSE,
+                "backFromFull", COMMAND_BACK_FROM_FULL);
     }
 
     @Override
@@ -279,11 +281,15 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
                 }, 1000);
                 break;
             }
-            case BACK_FROM_FULL: {
+            case COMMAND_BACK_FROM_FULL: {
                 if (orientationUtils != null) {
                     orientationUtils.backToProtVideo();
                 }
                 player.backFromWindowFull(mReactApplicationContext.getCurrentActivity());
+                break;
+            }
+            case COMMAND_PAUSE: {
+                GSYVideoManager.onPause();
                 break;
             }
         }

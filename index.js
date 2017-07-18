@@ -83,7 +83,11 @@ class VideoPlayer extends Component {
 
   pause = () => {
     if(Platform.OS == 'android') {
-      // TODO
+      UIManager.dispatchViewManagerCommand(
+        ReactNative.findNodeHandle(this),
+        UIManager.RCTVideoPlayer.Commands.pause,
+        []
+      );
     } else {
       const { VideoPlayerManager } = NativeModules;
       VideoPlayerManager.pause(ReactNative.findNodeHandle(this));
