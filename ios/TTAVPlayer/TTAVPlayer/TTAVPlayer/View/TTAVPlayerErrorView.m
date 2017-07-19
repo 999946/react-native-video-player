@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) UILabel *titleLabel;
 
-@property (nonatomic, strong) UIButton *closeBtn;
+//@property (nonatomic, strong) UIButton *closeBtn;
 
 @end
 
@@ -56,11 +56,11 @@
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:_titleLabel];
     
-    self.closeBtn = [[UIButton alloc]init];
-    self.closeBtn.imageEdgeInsets = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
-    [self.closeBtn setImage:[UIImage imageNamed:@"TTAVPlayer.bundle/multimedia_close"] forState:UIControlStateNormal];
-    [self.closeBtn addTarget:self action:@selector(clickCloseBtn) forControlEvents:UIControlEventTouchDown];
-    [self addSubview:self.closeBtn];
+//    self.closeBtn = [[UIButton alloc]init];
+//    self.closeBtn.imageEdgeInsets = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
+//    [self.closeBtn setImage:[UIImage imageNamed:@"TTAVPlayer.bundle/multimedia_close"] forState:UIControlStateNormal];
+//    [self.closeBtn addTarget:self action:@selector(clickCloseBtn) forControlEvents:UIControlEventTouchDown];
+//    [self addSubview:self.closeBtn];
 }
 
 - (void)toggleRetry{
@@ -81,7 +81,7 @@
 - (void)layoutSubviews{
     self.imageView.frame = CGRectMake((self.bounds.size.width - 50.0f)/2, (self.bounds.size.height - 50.0f)/2, 50.0f, 50.0f);
     self.titleLabel.origin = CGPointMake((self.bounds.size.width - self.titleLabel.width)/2 , _imageView.bottom + 20.0f);
-    self.closeBtn.frame = CGRectMake((self.bounds.size.width - 50.0f), 0.0f, 50.0f, 50.0f);
+//    self.closeBtn.frame = CGRectMake((self.bounds.size.width - 50.0f), 0.0f, 50.0f, 50.0f);
 }
 
 - (void)startRotation
