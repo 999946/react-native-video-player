@@ -202,7 +202,7 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     public void setSrc(final RCTVideoPlayer player, @Nullable String src) {
         Log.i("RCTVideoPlayer", "set src " + src);
 
-        player.setUp(src, false);
+        player.setUp(src, false, "");
         // 如果切换了播放的文件路径，触发开始播放
         if(src.equals(this.src)){
             player.postDelayed(new Runnable() {

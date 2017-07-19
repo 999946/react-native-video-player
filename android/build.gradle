@@ -35,6 +35,8 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:0.35.+'
-    compile 'com.shuyu:GSYVideoPlayer:1.6.7'
+//    compile 'com.shuyu:GSYVideoPlayer:1.6.7'
+    compile 'com.shuyu:gsyVideoPlayer-java:2.0.2'
+    compile 'com.shuyu:gsyVideoPlayer-ex_so:2.0.2'
 }
   
