@@ -178,6 +178,7 @@
     _isPlaying = NO;
     [self showPlaceholderImageView];
     [self.player pause];
+    [self hideLoadingIndicator];
 }
 
 - (void)replay{
