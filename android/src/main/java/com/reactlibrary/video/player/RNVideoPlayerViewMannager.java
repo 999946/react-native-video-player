@@ -52,13 +52,10 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     }
 
     private String src;
-    private boolean isPlay;
-    private boolean isPause;
+    private String newSrc;
+    private String title;
 
     private OrientationUtils orientationUtils;
-
-    private BroadcastReceiver receiver;
-
 
     @Override
     public String getName() {
@@ -139,45 +136,14 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
         return player;
     }
 
-    private void addOrientationReceiver(ReactContext reactContext) {
-
-        this.receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Configuration newConfig = intent.getParcelableExtra("newConfig");
-                Log.d("receiver", String.valueOf(newConfig.orientation));
-
-                String orientationValue = newConfig.orientation == 1 ? "PORTRAIT" : "LANDSCAPE";
-                //如果旋转了就全屏
-                if (isPlay && !isPause) {
-                    if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_USER) {
-                        if (!player.isIfCurrentIsFullscreen()) {
-                            player.startWindowFullscreen(mReactApplicationContext.getCurrentActivity(), true, true);
-                        }
-                    } else {
-                        //新版本isIfCurrentIsFullscreen的标志位内部提前设置了，所以不会和手动点击冲突
-                        if (player.isIfCurrentIsFullscreen()) {
-                            StandardGSYVideoPlayer.backFromWindowFull(mReactApplicationContext.getCurrentActivity());
-                        }
-                        if (orientationUtils != null) {
-                            orientationUtils.setEnable(true);
-                        }
-                    }
-                }
-            }
-        };
-    }
-
     @Override
     public void onHostResume() {
         GSYVideoManager.onResume();
-        isPause = false;
     }
 
     @Override
     public void onHostPause() {
         GSYVideoManager.onPause();
-        isPause = true;
     }
 
     @Override
@@ -201,36 +167,27 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     @ReactProp(name = "src")
     public void setSrc(final RCTVideoPlayer player, @Nullable String src) {
         Log.i("RCTVideoPlayer", "set src " + src);
-
-        player.setUp(src, false, "");
-        // 如果切换了播放的文件路径，触发开始播放
-        if(src.equals(this.src)){
-            player.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    player.startPlayLogic();
-                }
-            }, 1000);
-        }
-        this.src = src;
+        this.newSrc = src;
     }
 
     @ReactProp(name = "title")
     public void setTitle(RCTVideoPlayer player, String title) {
         Log.i("RCTVideoPlayer", "set title "+ title);
-        player.getTitleTextView().setText(title);
+        this.title = title;
     }
 
     @ReactProp(name = "placeholderImage")
     public void setPlaceholderImage(RCTVideoPlayer player, String placeholderImage) {
         Log.i("RCTVideoPlayer", "set placeholderImage " + placeholderImage);
-        Uri uri = Uri.parse(placeholderImage);
-        SimpleDraweeView draweeView = new SimpleDraweeView(mReactApplicationContext.getCurrentActivity());
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.CENTER;
-        draweeView.setLayoutParams(params);
-        draweeView.setImageURI(uri);
-        player.setThumbImageView(draweeView);
+        if(placeholderImage != null && !placeholderImage.equals("")) {
+            Uri uri = Uri.parse(placeholderImage);
+            SimpleDraweeView draweeView = new SimpleDraweeView(mReactApplicationContext.getCurrentActivity());
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+            params.gravity = Gravity.CENTER;
+            draweeView.setLayoutParams(params);
+            draweeView.setImageURI(uri);
+            player.setThumbImageView(draweeView);
+        }
     }
 
 
@@ -238,6 +195,22 @@ public class RNVideoPlayerViewMannager extends SimpleViewManager<RCTVideoPlayer>
     protected void onAfterUpdateTransaction(RCTVideoPlayer view) {
         super.onAfterUpdateTransaction(view);
 
+        if(this.newSrc != null && !this.newSrc.equals(this.src)) {
+            player.setUp(this.newSrc, false, this.title == null ? "" : this.title);
+
+            // 如果切换了播放的文件路径，触发开始播放
+            if(this.src != null){
+                Log.i("RCTVideoPlayer", "diff src play");
+                player.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        player.startPlayLogic();
+                    }
+                }, 750);
+            }
+            this.src = this.newSrc;
+            this.newSrc = null;
+        }
         player.getTitleTextView().setVisibility(View.GONE);
         player.getBackButton().setVisibility(View.VISIBLE);
     }
