@@ -9,7 +9,7 @@
 //  14/25
 const static CGFloat screenRate = 0.56;
 
-const static CGFloat edgeInset = 10.0f;
+const static CGFloat edgeInset = 15.0f;
 
 #import "TTAVPlayerView+ViewMode.h"
 #import "TTAVPlayerView+Event.h"
@@ -360,6 +360,8 @@ static char directionAssoKey;
     [self.videoView addSubview:self.bottomControlView];
     
     self.playBtn = [[UIButton alloc]init];
+    [self.playBtn setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.68]];
+    self.playBtn.layer.cornerRadius = 5.0f;
     self.playBtn.imageEdgeInsets = UIEdgeInsetsMake(edgeInset, edgeInset, edgeInset, edgeInset);
     [self.playBtn setImage:[UIImage imageNamed:@"TTAVPlayer.bundle/multimedia_avplayer_pause"] forState:UIControlStateNormal];
     [self.playBtn setImage:[UIImage imageNamed:@"TTAVPlayer.bundle/multimedia_avplayer_play"] forState:UIControlStateSelected];
