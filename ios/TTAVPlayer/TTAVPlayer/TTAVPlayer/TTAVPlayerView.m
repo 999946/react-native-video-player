@@ -73,7 +73,7 @@
 //            
 //            }];
         }else{
-            [self clickCloseBtn];
+//            [self clickCloseBtn];
         }
     }else{
         self.isAllowNoWIFIPlay = YES;
