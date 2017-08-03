@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Facebook. All rights reserved.
 //
 #if __has_include(<React/RCTUIManager.h>)
-#import <React/RCTViewManager.h>
+#import <React/RCTUIManager.h>
 #else
 #import "RCTUIManager.h"
 #endif
