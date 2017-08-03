@@ -5,7 +5,12 @@
 //  Created by lzw on 2017/6/28.
 //  Copyright © 2017年 Facebook. All rights reserved.
 //
+#if __has_include(<React/RCTUIManager.h>)
+#import <React/RCTViewManager.h>
+#else
 #import "RCTUIManager.h"
+#endif
+
 #import "RCTVideoPlayerManager.h"
 #import "RCTVideoPlayer.h"
 

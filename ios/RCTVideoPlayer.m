@@ -7,10 +7,18 @@
 //
 
 #import "RCTVideoPlayer.h"
+
+#if __has_include(<React/RCTConvert.h>)
+#import <React/RCTConvert.h>
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/UIView+React.h>
+#else
 #import "RCTConvert.h"
 #import "RCTBridgeModule.h"
 #import "RCTEventDispatcher.h"
 #import "UIView+React.h"
+#endif
 
 @implementation RCTVideoPlayer {
     RCTEventDispatcher *_eventDispatcher;
