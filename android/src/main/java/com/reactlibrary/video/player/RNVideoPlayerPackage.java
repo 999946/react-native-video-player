@@ -16,7 +16,6 @@ public class RNVideoPlayerPackage implements ReactPackage {
       return Arrays.<NativeModule>asList(new RNVideoPlayerModule(reactContext));
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
       return Collections.emptyList();
     }
